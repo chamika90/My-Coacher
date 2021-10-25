@@ -3,12 +3,18 @@ import {View, Text, Image, TouchableOpacity} from 'react-native';
 import Swiper from 'react-native-swiper';
 import {WebView} from 'react-native-webview';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import VideoPlayer from 'react-native-video-player';
 
 import {
   getLessonStatus,
   updateLessonStatus,
-} from '../../database/LessonStatusSchema';
-import {LessonContent, FEEDBACK_TYPE} from '../../config/constants';
+  checkFeedBackAvailability,
+} from '../../database/ConfigSchemas';
+import {
+  LessonContent,
+  FEEDBACK_TYPE,
+  NAVIGATION_SCREENS,
+} from '../../config/constants';
 import {IContent} from '../../types/contentType';
 import styles from './styles';
 import Res from '../../resources';
@@ -25,6 +31,11 @@ interface ArticleContentProps {
 
 interface VideoContentProps {
   videoContent: string;
+}
+
+interface FeedbackButtonProps {
+  iconName: string;
+  onButtonPress: () => void;
 }
 
 const ImageContent: React.FC<ImageContentProps> = ({imageUri}) => {
@@ -46,27 +57,54 @@ const ArticleContent: React.FC<ArticleContentProps> = ({articleContent}) => {
 };
 
 const VideoContent: React.FC<VideoContentProps> = ({videoContent}) => {
-  return <Text>{videoContent}</Text>;
+  return (
+    <View style={styles.articleContainer}>
+      <VideoPlayer
+        video={{
+          uri: videoContent,
+        }}
+        videoWidth={1600}
+        videoHeight={900}
+      />
+    </View>
+  );
+};
+
+const FeedbackButton: React.FC<FeedbackButtonProps> = ({
+  iconName,
+  onButtonPress,
+}) => {
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        onButtonPress();
+      }}>
+      <Icon name={iconName} size={16} color={Colors.blueRibbon} />
+    </TouchableOpacity>
+  );
 };
 
 /*
  * Lesson Content Screen
  */
-const LessonContentView = ({navigation, route}) => {
+const LessonContentView = ({navigation, route}: any) => {
   const {id} = route.params;
   const [contentList, setContentList] = useState<IContent[]>([]);
   const [isEnd, setIsEndLesson] = useState(false);
-  const [lessonStatus, setLessonStatus] = useState<object | undefined>(
-    undefined,
-  );
+
   const [currentLesson, setCurrentLesson] = useState<number>(0);
+  const [isFeedbackAvailable, setFeedbackAvailability] = useState(false);
 
   useEffect(() => {
     setContentList(LessonContent[id]);
     const lessonStatusObj = getLessonStatus(id);
-    setLessonStatus(lessonStatusObj);
     setCurrentLesson(lessonStatusObj.currentPosition);
-  }, [id]);
+    const feedBackStatus = checkFeedBackAvailability(id);
+    setFeedbackAvailability(feedBackStatus);
+    if (lessonStatusObj.currentPosition === contentList.length - 1) {
+      setIsEndLesson(true);
+    }
+  }, [id, contentList]);
 
   const getLessonContent = (item: IContent) => {
     switch (item.type) {
@@ -95,7 +133,7 @@ const LessonContentView = ({navigation, route}) => {
   };
 
   const getFeedBack = (type: string) => {
-    navigation.navigate('FeedBack', {
+    navigation.navigate(NAVIGATION_SCREENS.FEEDBACK, {
       id: id,
       type: type,
     });
@@ -121,25 +159,25 @@ const LessonContentView = ({navigation, route}) => {
             );
           })}
       </Swiper>
-      {isEnd && (
+      {isEnd && !isFeedbackAvailable && (
         <View style={styles.footer}>
           <Text style={styles.footerDescription}>
             Please give us your feedback.
           </Text>
           <View style={styles.footerButtonContainer}>
-            <TouchableOpacity
-              onPress={() => {
+            <FeedbackButton
+              iconName={'microphone'}
+              onButtonPress={() => {
                 getFeedBack(FEEDBACK_TYPE.AUDIO);
-              }}>
-              <Icon name={'microphone'} size={16} color={Colors.blueRibbon} />
-            </TouchableOpacity>
+              }}
+            />
 
-            <TouchableOpacity
-              onPress={() => {
+            <FeedbackButton
+              iconName={'comment-dots'}
+              onButtonPress={() => {
                 getFeedBack(FEEDBACK_TYPE.TEXT);
-              }}>
-              <Icon name={'comment-dots'} size={16} color={Colors.blueRibbon} />
-            </TouchableOpacity>
+              }}
+            />
           </View>
         </View>
       )}
