@@ -79,8 +79,8 @@ export const LessonContent: ILessonContent = {
       type: 'Article',
       data: `
       <h1>Essay on English Language: The International Language</h1>
-      <h2>And below is my dog</h2>
-      <img src="https://www.kindacode.com/wp-content/uploads/2020/10/dog_sample.jpg" alt="My Dog"/>
+      <h2>English</h2>
+      <img src="https://englishlive.ef.com/blog/wp-content/uploads/sites/2/2015/05/how-english-became-the-global-language.jpg" alt="English"/>
       <br/>
       <hr/>
       <br/>
