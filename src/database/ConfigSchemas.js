@@ -1,26 +1,56 @@
 import Realm from 'realm';
 
-// Declare Schema
-class LessonStatusSchema extends Realm.Object {}
-LessonStatusSchema.schema = {
+const FeedBackSchema = {
+  name: 'FeedBack',
+  properties: {
+    lessonId: 'int',
+    audioData: 'string?',
+    commentData: 'string?',
+  },
+};
+const LessonStatusSchema = {
   name: 'LessonStatus',
   properties: {
-    id: 'int',
     lessonId: 'int',
     currentPosition: 'int',
     feedbackStatus: 'bool',
   },
 };
 
-// Create realm
-let realm = new Realm({schema: [LessonStatusSchema], schemaVersion: 1});
+let realm = new Realm({schema: [FeedBackSchema, LessonStatusSchema]});
+
+export const insertFeedbackInfo = feedBack => {
+  console.log('insert feed back info **** ', feedBack);
+  return new Promise((resolve, reject) => {
+    try {
+      realm.write(() => {
+        realm.create('FeedBack', {
+          lessonId: feedBack.lessonId,
+          audioData: feedBack.audioData,
+          commentData: feedBack.commentData,
+        });
+      });
+      resolve();
+    } catch (error) {
+      reject();
+    }
+  });
+};
+
+// Check feedback by lesson Id
+export const checkFeedBackAvailability = lessonId => {
+  console.log('checkFeedBackAvailability **** ', lessonId);
+
+  const feedbackData = realm.objects('FeedBack');
+  const feedback = feedbackData.filtered(`lessonId == ${lessonId}`);
+  return feedback[0] ? true : false;
+};
 
 export const insertLessonStatusInfo = lessonStatus => {
   return new Promise((resolve, reject) => {
     try {
       realm.write(() => {
         realm.create('LessonStatus', {
-          id: lessonStatus.id,
           lessonId: lessonStatus.lessonId,
           currentPosition: lessonStatus.currentPosition,
           feedbackStatus: lessonStatus.feedbackStatus,
@@ -35,6 +65,8 @@ export const insertLessonStatusInfo = lessonStatus => {
 
 // Get lesson status by lesson Id
 export const getLessonStatus = lessonId => {
+  console.log('getLessonStatus **** ', lessonId);
+
   const lessonStatusData = realm.objects('LessonStatus');
   const statusObj = lessonStatusData.filtered(`lessonId == ${lessonId}`);
   return statusObj[0];
@@ -51,6 +83,5 @@ export const updateLessonStatus = lessonObj => {
     statusObj.feedbackStatus = lessonObj.feedbackStatus;
   });
 };
-
 // Export the realm
 export default realm;
