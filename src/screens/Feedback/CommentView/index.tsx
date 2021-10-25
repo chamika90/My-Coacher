@@ -7,13 +7,15 @@ import styles from './styles';
 
 interface CommentViewProps {
   id: 'number';
+  addFeedBack: (feedBackObj: object) => void;
 }
 
 const {Images} = Res;
+
 /*
  * CommentView
  */
-const CommentView: React.FC<CommentViewProps> = ({id}) => {
+const CommentView: React.FC<CommentViewProps> = ({id, addFeedBack}) => {
   const [isButtonDisabled, setButtonStatus] = useState(true);
   const [comment, setComment] = useState<string>('');
 
@@ -24,7 +26,14 @@ const CommentView: React.FC<CommentViewProps> = ({id}) => {
     setComment(text);
   };
 
-  const addComment = () => {};
+  const addComment = () => {
+    const commentObj = {
+      lessonId: id,
+      commentData: comment,
+    };
+
+    addFeedBack(commentObj);
+  };
 
   return (
     <View style={styles.container}>

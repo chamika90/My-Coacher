@@ -10,11 +10,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  timerContainer: {
+    flex: 5,
+    justifyContent: 'center',
+  },
   buttonContainer: {
+    flex: 1.5,
     flexDirection: 'row',
   },
+  description: {
+    flex: 0.5,
+    textAlign: 'center',
+  },
   button: {
-    backgroundColor: 'yellow',
+    backgroundColor: Colors.fioletowyPurple,
     width: 50,
     height: 50,
     borderRadius: 50,

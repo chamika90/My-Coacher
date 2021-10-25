@@ -1,74 +1,72 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Platform,
-  PermissionsAndroid,
-} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, TouchableOpacity, Platform, Alert} from 'react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import {insertFeedbackInfo} from '../../../database/FeedbackSchema';
+import {checkPermission} from '../../../helper/utils';
 import {toBase64} from '../../../helper/utils';
+import Res from '../../../resources';
 import styles from './styles';
+
+const {Colors} = Res;
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
 interface AudioViewProps {
-  id: 'number';
+  id: number;
+  addFeedBack: (feedBackObj: object) => void;
 }
+
+interface RecordTimerProps {
+  time: string;
+}
+
+interface ControlButtonProps {
+  iconName: string;
+  onButtonPress: () => void;
+}
+
+const RecordTimer: React.FC<RecordTimerProps> = ({time}) => {
+  return (
+    <View style={styles.recordOuterContainer}>
+      <View style={styles.recordOuterCircle}>
+        <View style={styles.record}>
+          <Text>{time}</Text>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+const ControlButton: React.FC<ControlButtonProps> = ({
+  iconName,
+  onButtonPress,
+}) => {
+  return (
+    <TouchableOpacity style={styles.button} onPress={() => onButtonPress()}>
+      <Icon name={iconName} size={16} color={Colors.white} />
+    </TouchableOpacity>
+  );
+};
 
 /*
  * AudioView Component
  */
-const AudioView: React.FC<AudioViewProps> = ({id}) => {
-  const [recordSecs, setRecordSecs] = useState(0);
+const AudioView: React.FC<AudioViewProps> = ({id, addFeedBack}) => {
   const [recordTime, setRecordTime] = useState('');
-  const [currentPositionSec, setCurrentPositionSec] = useState(0);
-  const [currentDurationSec, setCurrentDurationSec] = useState(0);
-  const [playTime, setPlayTime] = useState('');
-  const [duration, setDuration] = useState('');
 
-  useEffect(() => {
-    if (Platform.OS === 'android') {
-      checkPermission();
-    }
-  }, []);
+  const addAudioFeedback = (base64Result: string | any) => {
+    const feedBack = {
+      lessonId: id,
+      audioData: base64Result,
+    };
 
-  const checkPermission = async () => {
-    try {
-      const grants = await PermissionsAndroid.requestMultiple([
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-      ]);
-
-      console.log('write external stroage', grants);
-
-      if (
-        grants['android.permission.WRITE_EXTERNAL_STORAGE'] ===
-          PermissionsAndroid.RESULTS.GRANTED &&
-        grants['android.permission.READ_EXTERNAL_STORAGE'] ===
-          PermissionsAndroid.RESULTS.GRANTED &&
-        grants['android.permission.RECORD_AUDIO'] ===
-          PermissionsAndroid.RESULTS.GRANTED
-      ) {
-        console.log('Permissions granted');
-      } else {
-        console.log('All required permissions not granted');
-        return;
-      }
-    } catch (err) {
-      console.warn(err);
-      return;
-    }
+    addFeedBack(feedBack);
   };
 
-  const onStartRecord = async () => {
+  const recordFeedBack = async () => {
     const result = await audioRecorderPlayer.startRecorder();
 
     audioRecorderPlayer.addRecordBackListener(e => {
-      setRecordSecs(e.currentPosition);
       setRecordTime(audioRecorderPlayer.mmssss(Math.floor(e.currentPosition)));
 
       return;
@@ -76,49 +74,47 @@ const AudioView: React.FC<AudioViewProps> = ({id}) => {
     console.log(result);
   };
 
+  const onStartRecord = async () => {
+    if (Platform.OS === 'android') {
+      if (await checkPermission()) {
+        recordFeedBack();
+      } else {
+        console.log('Please grant permission');
+      }
+    } else {
+      recordFeedBack();
+    }
+  };
+
   const onStopRecord = async () => {
     const result = await audioRecorderPlayer.stopRecorder();
-    setRecordSecs(0);
+    // setRecordSecs(0);
     audioRecorderPlayer.removeRecordBackListener();
 
     toBase64('sound.mp4', '/data/user/0/com.mycoacher/cache/sound.mp4').then(
       base64Result => {
-        const feedBack = {
-          id: new Date().getTime(),
-          lessonId: id,
-          data: base64Result,
-        };
-
-        insertFeedbackInfo(feedBack)
-          .then(() => {
-            console.log('insertFeedbackInfo success');
-          })
-          .catch(error => {
-            console.log('insertFeedbackInfo error', error);
-            // alert('some thing went wrong');
-          });
+        addAudioFeedback(base64Result);
       },
     );
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.recordOuterContainer}>
-        <View style={styles.recordOuterCircle}>
-          <View style={styles.record}>
-            <Text>{recordTime}</Text>
-          </View>
-        </View>
+      <View style={styles.timerContainer}>
+        <RecordTimer time={recordTime} />
       </View>
 
+      <Text style={styles.description}>Hit the record button to start!</Text>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => onStartRecord()}>
-          <Icon name={'microphone'} size={16} color={'#000000'} />
-        </TouchableOpacity>
+        <ControlButton
+          iconName={'microphone'}
+          onButtonPress={() => onStartRecord()}
+        />
 
-        <TouchableOpacity style={styles.button} onPress={() => onStopRecord()}>
-          <Icon name={'stop-circle'} size={16} color={'#000000'} />
-        </TouchableOpacity>
+        <ControlButton
+          iconName={'stop-circle'}
+          onButtonPress={() => onStopRecord()}
+        />
       </View>
     </View>
   );
