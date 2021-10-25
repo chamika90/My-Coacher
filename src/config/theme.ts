@@ -16,8 +16,13 @@ export const theme = {
     primaryButtonBackgroundColor: Colors.blueRibbon,
     primaryButtonDisabledColor: Colors.warmGrey,
 
+    primaryControlButtonBackgroundColor: Colors.fioletowyPurple,
+
     secondaryButtonTextColor: Colors.blueRibbon,
 
     primaryBorderColor: Colors.warmGrey,
+
+    success: Colors.malachite,
+    error: Colors.grenadier,
   },
 };
