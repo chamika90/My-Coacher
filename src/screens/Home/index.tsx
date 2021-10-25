@@ -4,8 +4,8 @@ import {SafeAreaView, FlatList} from 'react-native';
 import {
   getLessonStatus,
   insertLessonStatusInfo,
-} from '../../database/LessonStatusSchema';
-import {Lessons} from '../../config/constants';
+} from '../../database/ConfigSchemas';
+import {Lessons, NAVIGATION_SCREENS} from '../../config/constants';
 import {ILesson} from '../../types/contentType';
 import styles from './styles';
 
@@ -14,7 +14,7 @@ import LessonCard from './LessonCard';
 /*
  * Home Screen
  */
-const Home = ({navigation}) => {
+const Home = ({navigation}: any) => {
   const [lessonsList, setLessonsList] = useState<ILesson[]>([]);
   useEffect(() => {
     setLessonsList(Lessons);
@@ -24,7 +24,6 @@ const Home = ({navigation}) => {
     const lessonObj = getLessonStatus(lesson.id);
     if (!lessonObj) {
       const lessonStatus = {
-        id: new Date().getTime(),
         lessonId: lesson.id,
         currentPosition: 0,
         feedbackStatus: false,
@@ -40,7 +39,7 @@ const Home = ({navigation}) => {
   };
 
   const navigateToLessonContent = (lesson: ILesson) => {
-    navigation.navigate('LessonContent', {
+    navigation.navigate(NAVIGATION_SCREENS.LESSON_CONTENT, {
       id: lesson.id,
     });
   };

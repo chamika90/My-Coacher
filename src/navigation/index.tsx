@@ -3,6 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import {theme} from '../config/theme';
+import {NAVIGATION_SCREENS} from '../config/constants';
 
 import HomeScreen from '../screens/Home';
 import LessonContentScreen from '../screens/LessonContent';
@@ -22,17 +23,17 @@ const HomeStackScreen = () => (
       headerTitleAlign: 'center',
     }}>
     <HomeStack.Screen
-      name="Home"
+      name={NAVIGATION_SCREENS.HOME}
       component={HomeScreen}
       options={{title: 'Your Lessons'}}
     />
     <HomeStack.Screen
-      name="LessonContent"
+      name={NAVIGATION_SCREENS.LESSON_CONTENT}
       component={LessonContentScreen}
       options={{title: 'Content'}}
     />
     <HomeStack.Screen
-      name="FeedBack"
+      name={NAVIGATION_SCREENS.FEEDBACK}
       component={FeedbackScreen}
       options={{title: 'Your Feed Back'}}
     />

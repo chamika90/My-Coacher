@@ -4,6 +4,7 @@ export const LESSON_ID = {
   ONE: 1,
   TWO: 2,
   THREE: 3,
+  FOUR: 4,
 };
 export const Lessons: ILesson[] = [
   {
@@ -23,6 +24,12 @@ export const Lessons: ILesson[] = [
     title: 'Sinhala',
     description: 'Learn Sinhala',
     icon: 'https://is2-ssl.mzstatic.com/image/thumb/Purple113/v4/b2/7e/8e/b27e8ebb-ba39-3285-7e12-a1de71845d13/source/256x256bb.jpg',
+  },
+  {
+    id: 4,
+    title: 'German',
+    description: 'Learn German',
+    icon: 'https://www.amratpal.com/wp-content/uploads/2021/02/Vector.png',
   },
 ];
 
@@ -115,18 +122,31 @@ export const LessonContent: ILessonContent = {
   [LESSON_ID.THREE]: [
     {
       id: 1,
+      type: 'Image',
+      data: 'https://imagesnotebook-static01.italki.com/197d1612-1f4c-4dfb-9f0d-b95deb531bc2.jpg',
+    },
+    {
+      id: 2,
+      type: 'Image',
+      data: 'https://www.listenandlearn.org/blog/wp-content/uploads/2018/01/5.png',
+    },
+    {
+      id: 3,
+      type: 'Image',
+      data: 'http://www.narenthiran.co.uk/language/sinhala_alphabet1.jpg',
+    },
+  ],
+
+  [LESSON_ID.FOUR]: [
+    {
+      id: 1,
       type: 'Video',
-      data: 'https://www.youtube.com/watch?v=6p_yaNFSYao',
+      data: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4?_=1',
     },
     {
       id: 2,
       type: 'Video',
-      data: 'https://www.youtube.com/watch?v=EkbM5EfFyME',
-    },
-    {
-      id: 3,
-      type: 'Video',
-      data: 'https://www.youtube.com/watch?v=-2zdUXve6fQ',
+      data: 'https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4',
     },
   ],
 };
@@ -134,4 +154,10 @@ export const LessonContent: ILessonContent = {
 export const FEEDBACK_TYPE = {
   AUDIO: 'AUDIO',
   TEXT: 'TEXT',
+};
+
+export const NAVIGATION_SCREENS = {
+  HOME: 'Home',
+  LESSON_CONTENT: 'LessonContent',
+  FEEDBACK: 'Feedback',
 };
