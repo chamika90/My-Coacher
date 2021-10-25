@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
   description: {
     flex: 0.5,
     textAlign: 'center',
+    color: Colors.white,
   },
   button: {
     backgroundColor: Colors.fioletowyPurple,

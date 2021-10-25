@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     width: '90%',
     flexDirection: 'column',
     margin: 10,
-    backgroundColor: colors.primaryCardBackgroundColor,
+    backgroundColor: colors.primaryBackgroundColor,
     elevation: 5,
   },
   imageContainer: {
@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     marginBottom: 10,
     borderColor: colors.primaryBorderColor,
+    backgroundColor: colors.secondaryBackgroundColor,
   },
   submitButtonContainer: {
     flex: 0.5,

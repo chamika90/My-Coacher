@@ -35,7 +35,7 @@ const HomeStackScreen = () => (
     <HomeStack.Screen
       name={NAVIGATION_SCREENS.FEEDBACK}
       component={FeedbackScreen}
-      options={{title: 'Your Feed Back'}}
+      options={{title: 'Your Feedback'}}
     />
   </HomeStack.Navigator>
 );

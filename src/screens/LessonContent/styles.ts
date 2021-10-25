@@ -7,8 +7,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    //backgroundColor: 'red',
-    backgroundColor: colors.primaryCardBackgroundColor,
+    backgroundColor: colors.primaryBackgroundColor,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 10,
@@ -16,7 +15,8 @@ const styles = StyleSheet.create({
   lessonContainer: {
     flex: 1,
   },
-  imageContainer: {
+  imageContainer: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+  image: {
     flex: 5,
     width: '100%',
   },
@@ -30,28 +30,27 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
     padding: 5,
-    //position: 'absolute',
-    //width: '100%',
-    // height: 50,
-    //backgroundColor: 'green',
     alignItems: 'center',
     bottom: 0,
     marginHorizontal: 10,
   },
   footerDescription: {
-    // backgroundColor: 'yellow',
+    fontSize: 16,
+    color: colors.primaryDescriptionTextColor,
     flex: 5,
   },
   footerButtonContainer: {
     flexDirection: 'row',
     padding: 5,
     justifyContent: 'space-between',
-    // backgroundColor: 'pink',
     flex: 1,
   },
   finishButtonText: {
     color: colors.primaryButtonTextColor,
     fontSize: 16,
+  },
+  loader: {
+    position: 'absolute',
   },
 });
 

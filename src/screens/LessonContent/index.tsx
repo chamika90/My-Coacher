@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import Swiper from 'react-native-swiper';
 import {WebView} from 'react-native-webview';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -17,9 +23,9 @@ import {
 } from '../../config/constants';
 import {IContent} from '../../types/contentType';
 import styles from './styles';
-import Res from '../../resources';
+import {theme} from '../../config/theme';
 
-const {Colors} = Res;
+const {colors} = theme;
 
 interface ImageContentProps {
   imageUri: string;
@@ -39,12 +45,27 @@ interface FeedbackButtonProps {
 }
 
 const ImageContent: React.FC<ImageContentProps> = ({imageUri}) => {
+  const [isLoading, setLoadingState] = useState(false);
   return (
-    <Image
-      style={styles.imageContainer}
-      resizeMode={'contain'}
-      source={{uri: imageUri}}
-    />
+    <View style={styles.imageContainer}>
+      <Image
+        style={styles.image}
+        resizeMode={'contain'}
+        source={{uri: imageUri}}
+        onLoadStart={() => {
+          setLoadingState(true);
+        }}
+        onLoadEnd={() => {
+          setLoadingState(false);
+        }}
+      />
+      <ActivityIndicator
+        style={styles.loader}
+        animating={isLoading}
+        size={50}
+        color={colors.primaryLoaderColor}
+      />
+    </View>
   );
 };
 
@@ -79,7 +100,7 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
       onPress={() => {
         onButtonPress();
       }}>
-      <Icon name={iconName} size={16} color={Colors.blueRibbon} />
+      <Icon name={iconName} size={20} color={colors.primaryButtonIconColor} />
     </TouchableOpacity>
   );
 };

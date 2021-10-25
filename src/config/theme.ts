@@ -16,11 +16,15 @@ export const theme = {
     primaryButtonBackgroundColor: Colors.blueRibbon,
     primaryButtonDisabledColor: Colors.warmGrey,
 
+    primaryDescriptionTextColor: Colors.white,
+
     primaryControlButtonBackgroundColor: Colors.fioletowyPurple,
 
     secondaryButtonTextColor: Colors.blueRibbon,
 
     primaryBorderColor: Colors.warmGrey,
+    primaryLoaderColor: Colors.fioletowyPurple,
+    primaryButtonIconColor: Colors.blueRibbon,
 
     success: Colors.malachite,
     error: Colors.grenadier,
