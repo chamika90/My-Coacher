@@ -7,7 +7,6 @@ export const toBase64 = (fileName: string, filePath: string) =>
 
     // Read file content on file loaded event
     reader.onload = function (event) {
-      console.log('event result -->', event.target.result);
       resolve(event.target.result);
     };
 

@@ -20,7 +20,6 @@ const LessonStatusSchema = {
 let realm = new Realm({schema: [FeedBackSchema, LessonStatusSchema]});
 
 export const insertFeedbackInfo = feedBack => {
-  console.log('insert feed back info **** ', feedBack);
   return new Promise((resolve, reject) => {
     try {
       realm.write(() => {
@@ -39,8 +38,6 @@ export const insertFeedbackInfo = feedBack => {
 
 // Check feedback by lesson Id
 export const checkFeedBackAvailability = lessonId => {
-  console.log('checkFeedBackAvailability **** ', lessonId);
-
   const feedbackData = realm.objects('FeedBack');
   const feedback = feedbackData.filtered(`lessonId == ${lessonId}`);
   return feedback[0] ? true : false;
@@ -65,8 +62,6 @@ export const insertLessonStatusInfo = lessonStatus => {
 
 // Get lesson status by lesson Id
 export const getLessonStatus = lessonId => {
-  console.log('getLessonStatus **** ', lessonId);
-
   const lessonStatusData = realm.objects('LessonStatus');
   const statusObj = lessonStatusData.filtered(`lessonId == ${lessonId}`);
   return statusObj[0];
@@ -74,7 +69,6 @@ export const getLessonStatus = lessonId => {
 
 // Update lesson status by lesson Id
 export const updateLessonStatus = lessonObj => {
-  console.log('update lesson status --> ', lessonObj);
   realm.write(() => {
     const lesson = realm.objects('LessonStatus');
     const statusObj = lesson.filtered(`lessonId == ${lessonObj.lessonId}`)[0];
