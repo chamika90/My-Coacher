@@ -13,7 +13,7 @@ export const theme = {
     primaryCardBackgroundColor: Colors.whisper,
 
     primaryButtonTextColor: Colors.white,
-    primaryButtonBackgroundColor: Colors.blueRibbon,
+    primaryButtonBackgroundColor: Colors.fioletowyPurple,
     primaryButtonDisabledColor: Colors.warmGrey,
 
     primaryDescriptionTextColor: Colors.white,
@@ -24,7 +24,7 @@ export const theme = {
 
     primaryBorderColor: Colors.warmGrey,
     primaryLoaderColor: Colors.fioletowyPurple,
-    primaryButtonIconColor: Colors.blueRibbon,
+    primaryButtonIconColor: Colors.fioletowyPurple,
 
     success: Colors.malachite,
     error: Colors.grenadier,

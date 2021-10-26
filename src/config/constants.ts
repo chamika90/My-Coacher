@@ -141,7 +141,7 @@ export const LessonContent: ILessonContent = {
     {
       id: 1,
       type: 'Video',
-      data: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4?_=1',
+      data: 'https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4',
     },
     {
       id: 2,

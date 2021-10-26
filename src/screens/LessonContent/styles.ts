@@ -27,6 +27,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     elevation: 10,
   },
+  videoContainer: {
+    backgroundColor: colors.primaryBackgroundColor,
+    flex: 1,
+    margin: 10,
+    justifyContent: 'center',
+    elevation: 10,
+  },
   footer: {
     flexDirection: 'row',
     padding: 5,

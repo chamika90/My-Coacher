@@ -22,6 +22,8 @@ const CommentView: React.FC<CommentViewProps> = ({id, addFeedBack}) => {
   const handleTextChange = (text: string) => {
     if (text.length > 0) {
       setButtonStatus(false);
+    } else {
+      setButtonStatus(true);
     }
     setComment(text);
   };

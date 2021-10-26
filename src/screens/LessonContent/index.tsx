@@ -79,7 +79,7 @@ const ArticleContent: React.FC<ArticleContentProps> = ({articleContent}) => {
 
 const VideoContent: React.FC<VideoContentProps> = ({videoContent}) => {
   return (
-    <View style={styles.articleContainer}>
+    <View style={styles.videoContainer}>
       <VideoPlayer
         video={{
           uri: videoContent,
